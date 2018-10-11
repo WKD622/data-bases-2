@@ -48,10 +48,10 @@ create view dostępne_wyciezki as
     and (select CURRENT_DATE from DUAL) < w.DATA
 
 -- f) rezerwacje_do_ anulowania – lista niepotwierdzonych rezerwacji które powinne zostać anulowane, rezerwacje
---  przygotowywane są do anulowania na tydzień przed wyjazdem)
-select r.NR_REZERWACJI as NR_REZERWACJI_DO_ANULOWANIA
-from REZERWACJE r
-       inner join WYCIECZKI w on w.ID_WYCIECZKI = r.ID_WYCIECZKI
-where r.STATUS = 'N'
-  and w.DATA - (select CURRENT_DATE from DUAL) < 7
-  and w.DATA > (select CURRENT_DATE from DUAL)
+create view rezerwacje_do_anulowania as
+  select r.NR_REZERWACJI as NR_REZERWACJI_DO_ANULOWANIA
+  from REZERWACJE r
+         inner join WYCIECZKI w on w.ID_WYCIECZKI = r.ID_WYCIECZKI
+  where r.STATUS = 'N'
+    and w.DATA - (select CURRENT_DATE from DUAL) < 7
+    and w.DATA > (select CURRENT_DATE from DUAL)
