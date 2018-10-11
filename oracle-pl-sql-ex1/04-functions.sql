@@ -84,3 +84,31 @@ as
   end;
 
 
+-- d) dostepne_wycieczki(kraj, data_od, data_do)
+
+create or replace type type_dostepne_wycieczki as object (
+  kraj varchar(50),
+  data date
+);
+
+create or replace type tab_dostepne_wycieczki as table of type_dostepne_wycieczki;
+
+create or replace function dostepne_wycieczki(kraj varchar2, data_od date, data_do date)
+  return tab_dostepne_wycieczki pipelined
+as
+  begin
+    for x in (select w.KRAJ, w.DATA
+              from WYCIECZKI w
+              where w.LICZBA_MIEJSC -
+                    NVL(
+                      (select count(*) from REZERWACJE r where w.ID_WYCIECZKI = r.ID_WYCIECZKI group by r.ID_WYCIECZKI),
+                      0) > 0
+                and ((select CURRENT_DATE from DUAL) < w.DATA)
+                and (w.DATA between data_od and data_do)
+                and w.KRAJ = kraj)
+    loop
+      pipe row (type_dostepne_wycieczki(x.KRAJ, x.DATA));
+    end loop;
+    return;
+  end;
+
