@@ -1,45 +1,76 @@
--- 5. Tworzenie procedur modyfikujących dane. Należy przygotować zestaw procedur pozwalających
--- na modyfikację danych oraz kontrolę poprawności ich wprowadzania
+-- pomocniczo
+create or replace function dostepne_miejsca(id_w NUMBER)
+  return NUMBER
+is
+  liczba_wolnych_miejsc number;
+  begin
+    select w.LICZBA_MIEJSC -
+           NVL((select count(*) from REZERWACJE r where w.ID_WYCIECZKI = r.ID_WYCIECZKI group by r.ID_WYCIECZKI),
+               0) into liczba_wolnych_miejsc
+    from WYCIECZKI w
+    where w.ID_WYCIECZKI = 6;
+    return liczba_wolnych_miejsc;
+  end;
+
+
 -- a) dodaj_rezerwacje(id_wycieczki, id_osoby), procedura powinna kontrolować czy wycieczka
 -- jeszcze się nie odbyła, i czy sa wolne miejsca
 create or replace procedure dodaj_rezerwacje(id_w NUMBER, id_o NUMBER)
 as
   begin
-    if ((select w.id_wycieczki from WYCIECZKI w where w.ID_WYCIECZKI = id_w) is not null
-        and
-        (select o.id_osoby from OSOBY o where o.id_osoby = id_o) is not null)
+    declare
+      wycieczki NUMBER;
+      osoba     NUMBER;
     begin
-      INSERT INTO rezerwacje (id_wycieczki, id_osoby, status)
-      VALUES (id_w, id_o, 'N');
-    end
+
+      select count(w.id_wycieczki) into wycieczki from WYCIECZKI w where w.ID_WYCIECZKI = id_w;
+      select o.id_osoby into osoba from OSOBY o where o.id_osoby = id_o;
+
+      if wycieczki > 0 and osoba > 0 and dostepne_miejsca(id_w) > 0
+      then
+        INSERT INTO rezerwacje (id_wycieczki, id_osoby, status) VALUES (id_w, id_o, 'N');
+      end if;
+
+    end;
   end;
-
-
 
 -- b) zmien_status_rezerwacji(id_rezerwacji, status), procedura kontrolować czy możliwa jest
 -- zmiana statusu, np. zmiana statusu już anulowanej wycieczki (przywrócenie do stanu
 -- aktywnego nie zawsze jest możliwe)
-
+create or replace procedure zmien_status_rezerwacji(id_rezerwacji NUMBER, new_status char)
+as
+  begin
+    declare
+      id_r NUMBER;
+      s    CHAR;
+    begin
+      select count(r.NR_REZERWACJI) into id_r from REZERWACJE r where r.NR_REZERWACJI = id_rezerwacji;
+      select r.status into s from REZERWACJE r where r.NR_REZERWACJI = id_rezerwacji;
+      if id_r = 1
+      then
+        if (s <> 'A')
+        then
+          update REZERWACJE r set r.STATUS = new_status where r.NR_REZERWACJI = id_rezerwacji;
+        end if;
+      end if;
+    end;
+  end;
 
 -- c) zmien_liczbe_miejsc(id_wycieczki, liczba_miejsc), nie wszystkie zmiany liczby miejsc są
 -- dozwolone, nie można zmniejszyć liczby miesc na wartość poniżej liczby zarezerwowanych
 -- miejsc
-
-
--- Należy rozważyć użycie transakcji
--- Należy zwrócić uwagę na kontrolę parametrów (np. jeśli parametrem jest id_wycieczki to należy
--- sprawdzić czy taka wycieczka istnieje, jeśli robimy rezerwację to należy sprawdzać czy są wolne
--- miejsca)
-
-CREATE OR REPLACE
-PROCEDURE ADD_EVALUATION
-  (   evaluation_id   IN NUMBER
-    , employee_id     IN NUMBER
-    , evaluation_date IN DATE
-    , job_id          IN VARCHAR2
-    , manager_id      IN NUMBER
-    , department_id   IN NUMBER
-  ) AS
-  BEGIN
-    NULL;
-  END ADD_EVALUATION;
+create or replace procedure zmien_liczbe_miejsc(id_wycieczki_ NUMBER, nowa_liczba_miejsc NUMBER)
+as
+  begin
+    declare
+      calkowita_liczba_miejsc NUMBER;
+      dostepne_miejsca_ NUMBER;
+    begin
+      select w.LICZBA_MIEJSC into calkowita_liczba_miejsc from WYCIECZKI w where w.ID_WYCIECZKI = id_wycieczki_;
+      select dostepne_miejsca(id_wycieczki_) into dostepne_miejsca_ from dual;
+      if (nowa_liczba_miejsc >= (calkowita_liczba_miejsc - dostepne_miejsca_))
+      then
+        update WYCIECZKI w set w.LICZBA_MIEJSC = nowa_liczba_miejsc where w.ID_WYCIECZKI = id_wycieczki_;
+      end if;
+    end;
+  end;
