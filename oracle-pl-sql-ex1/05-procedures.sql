@@ -74,3 +74,31 @@ as
       end if;
     end;
   end;
+
+
+-- 6. Dodajemy tabelę dziennikującą zmiany statusu rezerwacji
+-- rezerwacje_log(id, id_rezerwacji, data, status)
+-- Należy zmienić warstwę procedur modyfikujących dane tak aby dopisywały informację do
+-- dziennika
+create or replace procedure zmien_status_rezerwacji(id_rezerwacji NUMBER, nowy_status_ char)
+as
+  begin
+    declare
+      id_r            NUMBER;
+      s               CHAR;
+      dzisiejsza_data DATE;
+    begin
+      select count(r.NR_REZERWACJI) into id_r from REZERWACJE r where r.NR_REZERWACJI = id_rezerwacji;
+      select r.status into s from REZERWACJE r where r.NR_REZERWACJI = id_rezerwacji;
+      select current_date into dzisiejsza_data from dual;
+      if id_r = 1
+      then
+        if (s <> 'A') and nowy_status_ in ('N', 'P', 'Z') and nowy_status_ <> s
+        then
+          update REZERWACJE r set r.STATUS = nowy_status_ where r.NR_REZERWACJI = id_rezerwacji;
+          INSERT INTO DZIENNIK_REZERWACJI (NR_REZERWACJI, DATA, NOWY_STATUS)
+          VALUES (id_rezerwacji, dzisiejsza_data, nowy_status_);
+        end if;
+      end if;
+    end;
+  end;
