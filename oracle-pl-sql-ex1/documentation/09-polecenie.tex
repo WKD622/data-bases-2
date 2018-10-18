@@ -1,0 +1,103 @@
+\newpage
+
+\section{Polecnie 9}
+
+\subsection{TRIGER OBSŁUGUJĄCY DODANIE REZERWACJI}
+Zmiana strategii obsługi redundantnego pola liczba\_wolnych\_miejsc. realizacja przy pomocy
+trigerów
+\subsubsection{DODAJ REZERWACJE 3}
+\begin{verbatim}
+CREATE PROCEDURE DODAJ_REZERWACJE_3(ID_W NUMBER, ID_O NUMBER)
+AS
+  BEGIN
+    DECLARE
+      WYCIECZKI NUMBER;
+      OSOBA     NUMBER;
+    BEGIN
+
+      SELECT COUNT(W.ID_WYCIECZKI) INTO WYCIECZKI FROM WYCIECZKI W WHERE W.ID_WYCIECZKI = ID_W;
+      SELECT O.ID_OSOBY INTO OSOBA FROM OSOBY O WHERE O.ID_OSOBY = ID_O;
+
+      IF WYCIECZKI > 0 AND OSOBA > 0
+      THEN
+        INSERT INTO REZERWACJE (ID_WYCIECZKI, ID_OSOBY, STATUS) VALUES (ID_W, ID_O, 'N');
+      END IF;
+    END;
+  END;
+\end{verbatim}
+
+\subsubsection{TRIGER DODAJ REZERWACJE 3}
+\begin{verbatim}
+CREATE OR REPLACE TRIGGER DODANIE_REZERWACJI_3
+  AFTER UPDATE
+  ON REZERWACJE
+  FOR EACH ROW
+  DECLARE
+    AKTUALNA_DATA DATE;
+  BEGIN
+    SELECT CURRENT_DATE INTO AKTUALNA_DATA FROM DUAL;
+    INSERT INTO DZIENNIK_REZERWACJI (NR_REZERWACJI, DATA, NOWY_STATUS)
+    VALUES (:OLD.NR_REZERWACJI, AKTUALNA_DATA, :NEW.STATUS);
+    BEGIN
+      PRZELICZ;
+    END;
+  END;
+\end{verbatim}
+
+Ten trigger różni się od dodaj\_rezerwacje\_2 tylko dodaniem procedury przelicz, której poprawne 
+działanie dowiodłem już wcześniej, z tego powodu nie będę zamieszczał zrzutu ekranu. 
+
+\subsection{TRIGER ZMIANA STATUSU REZERWACJI}
+triger obsługujący zmianę statusu
+Ten sam co poprzednio, ponieważ pole liczba miejsc nie ma związku ze statusem rezerwacji.
+
+\begin{verbatim}
+CREATE OR REPLACE TRIGGER ZMIANA_STATUSU_REZERWACJI
+  AFTER UPDATE
+  ON REZERWACJE
+  FOR EACH ROW
+  DECLARE
+    AKTUALNA_DATA DATE;
+  BEGIN
+    SELECT CURRENT_DATE INTO AKTUALNA_DATA FROM DUAL;
+    INSERT INTO DZIENNIK_REZERWACJI (NR_REZERWACJI, DATA, NOWY_STATUS)
+    VALUES (:OLD.NR_REZERWACJI, AKTUALNA_DATA, :NEW.STATUS);
+  END;
+\end{verbatim}
+
+\subsection{ZMIEN LICZBE MIEJSC 3}
+triger obsługujący zmianę liczby miejsc na poziomie wycieczki
+\begin{verbatim}
+CREATE PROCEDURE ZMIEN_LICZBE_MIEJSC_3(ID_WYCIECZKI_ NUMBER, NOWA_LICZBA_MIEJSC NUMBER)
+AS
+  BEGIN
+    DECLARE
+      CALKOWITA_LICZBA_MIEJSC NUMBER;
+      DOSTEPNE_MIEJSCA_ NUMBER;
+    BEGIN
+      SELECT W.LICZBA_MIEJSC INTO CALKOWITA_LICZBA_MIEJSC FROM WYCIECZKI W WHERE W.ID_WYCIECZKI = ID_WYCIECZKI_;
+      SELECT DOSTEPNE_MIEJSCA(ID_WYCIECZKI_) INTO DOSTEPNE_MIEJSCA_ FROM DUAL;
+      IF (NOWA_LICZBA_MIEJSC >= (CALKOWITA_LICZBA_MIEJSC - DOSTEPNE_MIEJSCA_))
+      THEN
+        UPDATE WYCIECZKI W SET W.LICZBA_MIEJSC = NOWA_LICZBA_MIEJSC WHERE W.ID_WYCIECZKI = ID_WYCIECZKI;
+      END IF;
+    END;
+  END;
+\end{verbatim}
+
+\subsection{TRIGER ZMIANA LICZBY MIEJSC}
+\begin{verbatim}
+CREATE OR REPLACE TRIGGER ZMIANA_LICZBY_MIEJSC
+  AFTER UPDATE
+  ON WYCIECZKI
+  FOR EACH ROW
+  WHEN (NEW.LICZBA_MIEJSC >= 0)
+  BEGIN
+    PRZELICZ();
+  END;
+\end{verbatim}
+
+
+
+Oczywiście po wprowadzeniu tej zmiany należy uaktualnić procedury modyfikujące dane.
+Najlepiej to zrobić tworząc nowe wersje (np. z sufiksem 3)

@@ -112,3 +112,16 @@ as
     return;
   end;
 
+-- pomocniczo
+create or replace function dostepne_miejsca(id_w NUMBER)
+  return NUMBER
+is
+  liczba_wolnych_miejsc number;
+  begin
+    select w.LICZBA_MIEJSC -
+           NVL((select count(*) from REZERWACJE r where w.ID_WYCIECZKI = r.ID_WYCIECZKI group by r.ID_WYCIECZKI),
+               0) into liczba_wolnych_miejsc
+    from WYCIECZKI w
+    where w.ID_WYCIECZKI = id_w;
+    return liczba_wolnych_miejsc;
+  end;

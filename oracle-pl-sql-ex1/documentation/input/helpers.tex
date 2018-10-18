@@ -1,0 +1,26 @@
+%##noBuild
+
+\newcounter{sqlLine}
+\newcounter{sqlLineOld}
+
+\newcommand{\docSQLFile}[1]{\setcounter{sqlLine}{0}\def\docSQLFileV{#1}}
+
+\newcommand{\docSQLSkip}[1]{\addtocounter{sqlLine}{#1}}
+
+\newcommand{\docSQLPaste}[1]{%
+\setcounter{sqlLineOld}{\value{sqlLine}}%
+\stepcounter{sqlLineOld}%
+\docSQLSkip{#1}%
+\docSQL{\docSQLFileV}%
+{\arabic{sqlLineOld}}%
+{\arabic{sqlLine}}%
+}
+
+
+\newcommand{\docSQL}[3]{%
+\lstinputlisting[firstline=#2,lastline=#3]{../schema/#1.sql}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Tabele
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
