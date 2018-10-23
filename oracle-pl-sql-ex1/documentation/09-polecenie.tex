@@ -88,14 +88,18 @@ AS
 \subsection{TRIGER ZMIANA LICZBY MIEJSC}
 \begin{verbatim}
 CREATE OR REPLACE TRIGGER ZMIANA_LICZBY_MIEJSC
-  AFTER UPDATE
+  before UPDATE
   ON WYCIECZKI
   FOR EACH ROW
-  WHEN (NEW.LICZBA_MIEJSC >= 0)
   BEGIN
-    PRZELICZ();
-  END;
-\end{verbatim}
+    declare
+      VAL number;
+    begin
+      VAL := :old.LICZBA_MIEJSC - :old.LICZBA_WOLNYCH_MIEJSC;
+      :new.LICZBA_WOLNYCH_MIEJSC := :new.LICZBA_MIEJSC - VAL;
+    END;
+  end;
+\end{verbatim} 
 
 
 
