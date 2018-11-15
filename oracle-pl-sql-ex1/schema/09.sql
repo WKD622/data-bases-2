@@ -67,13 +67,18 @@ as
     end;
   end;
 
-create or replace trigger zmiana_liczby_miejsc
-  after update
-  on wycieczki
-  for each row
-  when (new.LICZBA_MIEJSC >= 0)
-  begin
-    PRZELICZ();
+CREATE OR REPLACE TRIGGER ZMIANA_LICZBY_MIEJSC
+  before UPDATE
+  ON WYCIECZKI
+  FOR EACH ROW
+  BEGIN
+    declare
+      VAL number;
+    begin
+      VAL := :old.LICZBA_MIEJSC - :old.LICZBA_WOLNYCH_MIEJSC;
+      :new.LICZBA_WOLNYCH_MIEJSC := :new.LICZBA_MIEJSC - VAL;
+    END;
   end;
+
 -- Oczywiście po wprowadzeniu tej zmiany należy uaktualnić procedury modyfikujące dane.
 -- Najlepiej to zrobić tworząc nowe wersje (np. z sufiksem 3)
