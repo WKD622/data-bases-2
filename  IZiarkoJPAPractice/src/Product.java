@@ -1,4 +1,6 @@
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Products")
@@ -11,12 +13,35 @@ public class Product {
     private String productName;
     private int unitsOnStock;
 
+    @ManyToOne
+    @JoinColumn(name = "Supplier_fk")
+    private Supplier supplier;
+
+    @ManyToOne
+    @JoinColumn(name = "Category_fk")
+    private Category category;
+
+    @ManyToMany(cascade =  CascadeType.PERSIST)
+    private Set<Invoice> invoices = new HashSet<>();
+
     public Product() {
 
     }
 
-    public Product(String name, int unitsOnStock) {
-        this.productName = name;
+    public void addInvoice(Invoice invoice){
+        this.invoices.add(invoice);
+    }
+
+    public void setSupplier(Supplier supplier){
+        this.supplier = supplier;
+    }
+
+    public void setCategory(Category category){
+        this.category = category;
+    }
+
+    public Product(String productName, int unitsOnStock) {
+        this.productName = productName;
         this.unitsOnStock = unitsOnStock;
     }
 }

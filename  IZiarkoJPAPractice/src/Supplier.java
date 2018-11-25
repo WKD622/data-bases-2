@@ -3,32 +3,39 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "Supplier")
-public class Supplier {
+@Table(name = "Suppliers")
+public class Supplier extends Company{
 
-    private String companyName;
-    private String street;
-    private String city;
+    int bankAccountNumber;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @OneToMany
+    @OneToMany(mappedBy = "supplier")
     private Set<Product> products = new HashSet<>();
 
     public Supplier(){
 
     }
 
-    public Supplier(String city, String street, String companyName){
-        this.companyName = companyName;
-        this.street = street;
-        this.city = city;
+    public Supplier(String companyName, String street, String city, String zipCode, int number, int bankAccountNumber) {
+        super(companyName, city, street, zipCode, number);
+        this.bankAccountNumber = bankAccountNumber;
+    }
 
+    public Supplier(int bankAccountNumber, Set<Product> products) {
+        this.bankAccountNumber = bankAccountNumber;
+        this.products = products;
     }
 
     public void addProduct(Product product){
         products.add(product);
+        product.setSupplier(this);
     }
-
 }
+
+
+
+
+

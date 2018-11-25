@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="jdbc:derby://localhost/IZiarkoJPA">
+  <database-model serializer="dbm" rdbms="DERBY" format-version="4.11">
+    <root id="1">
+      <ServerVersion>10.14</ServerVersion>
+    </root>
+    <schema id="2" parent="1" name="APP">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="NULLID"/>
+    <schema id="4" parent="1" name="SQLJ"/>
+    <schema id="5" parent="1" name="SYS"/>
+    <schema id="6" parent="1" name="SYSCAT"/>
+    <schema id="7" parent="1" name="SYSCS_DIAG"/>
+    <schema id="8" parent="1" name="SYSCS_UTIL"/>
+    <schema id="9" parent="1" name="SYSFUN"/>
+    <schema id="10" parent="1" name="SYSIBM"/>
+    <schema id="11" parent="1" name="SYSPROC"/>
+    <schema id="12" parent="1" name="SYSSTAT"/>
+    <table id="13" parent="2" name="CATEGORIES"/>
+    <table id="14" parent="2" name="CUSTOMER"/>
+    <table id="15" parent="2" name="INVOICES"/>
+    <table id="16" parent="2" name="PRODUCTS"/>
+    <table id="17" parent="2" name="PRODUCTS_INVOICES"/>
+    <table id="18" parent="2" name="SUPPLIERS"/>
+    <column id="19" parent="13" name="CATEGORYID">
+      <Position>1</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="20" parent="13" name="NAME">
+      <Position>2</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <index id="21" parent="13" name="SQL181125225502170">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>CATEGORYID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="22" parent="13" name="SQL181125225502170">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>CATEGORYID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="23" parent="14" name="ID">
+      <Position>1</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="24" parent="14" name="CITY">
+      <Position>2</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="25" parent="14" name="COMPANYNAME">
+      <Position>3</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="26" parent="14" name="NUMBER">
+      <Position>4</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="27" parent="14" name="STREET">
+      <Position>5</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="28" parent="14" name="ZIPCODE">
+      <Position>6</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="29" parent="14" name="DISCOUNT">
+      <Position>7</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="30" parent="14" name="SQL181125225502190">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="31" parent="14" name="SQL181125225502190">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="32" parent="15" name="INVOICENUMBER">
+      <Position>1</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="33" parent="15" name="QUANTITY">
+      <Position>2</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="34" parent="15" name="SQL181125225502210">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>INVOICENUMBER</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="35" parent="15" name="SQL181125225502210">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>INVOICENUMBER</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="36" parent="16" name="ID">
+      <Position>1</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="37" parent="16" name="PRODUCTNAME">
+      <Position>2</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="38" parent="16" name="UNITSONSTOCK">
+      <Position>3</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="39" parent="16" name="CATEGORY_FK">
+      <Position>4</Position>
+      <DataType>INTEGER|4s</DataType>
+    </column>
+    <column id="40" parent="16" name="SUPPLIER_FK">
+      <Position>5</Position>
+      <DataType>INTEGER|4s</DataType>
+    </column>
+    <index id="41" parent="16" name="SQL181125225502220">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="42" parent="16" name="SQL181125225502280">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>CATEGORY_FK</ColNames>
+    </index>
+    <index id="43" parent="16" name="SQL181125225502290">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>SUPPLIER_FK</ColNames>
+    </index>
+    <key id="44" parent="16" name="SQL181125225502220">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="45" parent="16" name="FKOKXRNU4N3WYNPBJMYUSCAB8QQ">
+      <ColNames>CATEGORY_FK</ColNames>
+      <RefSchemaName>APP</RefSchemaName>
+      <RefTableName>CATEGORIES</RefTableName>
+      <RefKeyName>SQL181125225502170</RefKeyName>
+      <RefColNames>CATEGORYID</RefColNames>
+    </foreign-key>
+    <foreign-key id="46" parent="16" name="FKKDPHS8K1CP358WXGHL6ILA4MQ">
+      <ColNames>SUPPLIER_FK</ColNames>
+      <RefSchemaName>APP</RefSchemaName>
+      <RefTableName>SUPPLIERS</RefTableName>
+      <RefKeyName>SQL181125225502250</RefKeyName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <column id="47" parent="17" name="PRODUCTS_ID">
+      <Position>1</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="48" parent="17" name="INVOICES_INVOICENUMBER">
+      <Position>2</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="49" parent="17" name="SQL181125225502240">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>PRODUCTS_ID
+INVOICES_INVOICENUMBER</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="50" parent="17" name="SQL181125225502320">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>PRODUCTS_ID</ColNames>
+    </index>
+    <index id="51" parent="17" name="SQL181125225502310">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>INVOICES_INVOICENUMBER</ColNames>
+    </index>
+    <key id="52" parent="17" name="SQL181125225502240">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>PRODUCTS_ID
+INVOICES_INVOICENUMBER</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="53" parent="17" name="FK4YYP6IAP8A01HDA3W0BD7T0Q3">
+      <ColNames>PRODUCTS_ID</ColNames>
+      <RefSchemaName>APP</RefSchemaName>
+      <RefTableName>PRODUCTS</RefTableName>
+      <RefKeyName>SQL181125225502220</RefKeyName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <foreign-key id="54" parent="17" name="FK96XRLQ0EDB9EPRQGYG32XL4FY">
+      <ColNames>INVOICES_INVOICENUMBER</ColNames>
+      <RefSchemaName>APP</RefSchemaName>
+      <RefTableName>INVOICES</RefTableName>
+      <RefKeyName>SQL181125225502210</RefKeyName>
+      <RefColNames>INVOICENUMBER</RefColNames>
+    </foreign-key>
+    <column id="55" parent="18" name="ID">
+      <Position>1</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="56" parent="18" name="CITY">
+      <Position>2</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="57" parent="18" name="COMPANYNAME">
+      <Position>3</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="58" parent="18" name="NUMBER">
+      <Position>4</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="59" parent="18" name="STREET">
+      <Position>5</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="60" parent="18" name="ZIPCODE">
+      <Position>6</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="61" parent="18" name="BANKACCOUNTNUMBER">
+      <Position>7</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="62" parent="18" name="SQL181125225502250">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="63" parent="18" name="SQL181125225502250">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+  </database-model>
+</dataSource>
