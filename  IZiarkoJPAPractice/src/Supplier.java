@@ -33,6 +33,11 @@ public class Supplier extends Company{
         products.add(product);
         product.setSupplier(this);
     }
+
+    @Override
+    public String toString() {
+        return "id: " + super.getId() + " | company name: " + super.getCompanyName() + " | city: " + super.getCity() + " | street: " + super.getStreet() + " | zip code: " + getZipCode() + " | number: " + String.valueOf(super.getNumber()) + " | bank account: " + String.valueOf(bankAccountNumber);
+    }
 }
 
 

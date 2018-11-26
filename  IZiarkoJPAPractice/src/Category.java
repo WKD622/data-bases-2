@@ -25,4 +25,9 @@ public class Category {
 
     public Category() {
     }
+
+    @Override
+    public String toString() {
+        return "category id: " + String.valueOf(categoryID) + " | name: " + name;
+    }
 }

@@ -13,7 +13,7 @@ public class Invoice {
     @ManyToMany(mappedBy = "invoices", cascade = CascadeType.PERSIST)
     Set<Product> products = new HashSet<>();
 
-    public void addProduct(Product product){
+    public void addProduct(Product product) {
         this.products.add(product);
         product.addInvoice(this);
     }
@@ -23,5 +23,10 @@ public class Invoice {
 
     public Invoice(int quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "invoice number: " + invoiceNumber + " | quantity: " + quantity;
     }
 }

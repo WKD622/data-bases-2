@@ -1,7 +1,7 @@
 import javax.persistence.Entity;
 
 @Entity
-public class Customer extends Company{
+public class Customer extends Company {
 
     private int discount;
 
@@ -15,6 +15,6 @@ public class Customer extends Company{
 
     @Override
     public String toString() {
-        return "Company: " + super.getCompanyName() + " | city: " + super.getCity() + " | street: " + super.getStreet() + " | zip code: " + getZipCode() + " | number: " + String.valueOf(super.getNumber()) + " | discount: " + String.valueOf(discount);
+        return "id: " + super.getId() + " | company name: " + super.getCompanyName() + " | city: " + super.getCity() + " | street: " + super.getStreet() + " | zip code: " + getZipCode() + " | number: " + String.valueOf(super.getNumber()) + " | discount: " + String.valueOf(discount);
     }
 }

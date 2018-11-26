@@ -12,7 +12,6 @@ public class DataBaseOperations {
 
     public void endOfSession() {
         emf2.close();
-
     }
 
     public Customer addNewCustomer(String companyName, String city, String street, String zipCode, int number, int discount) {
@@ -60,7 +59,6 @@ public class DataBaseOperations {
         return invoice;
     }
 
-
     public void addProductToCategory(Category category, Product product) {
         EntityTransaction etx = this.em.getTransaction();
         category.addProduct(product);
@@ -74,16 +72,85 @@ public class DataBaseOperations {
         etx.commit();
     }
 
-    public String seeCustomers() {
+    public String showCustomers() {
         String output = "CUSTOMERS:\n";
         EntityTransaction etx = this.em.getTransaction();
         etx.begin();
         List<Customer> q1 = em.createQuery("from Customer", Customer.class).getResultList();
         etx.commit();
-        for (Customer customer: q1) {
+        for (Customer customer : q1) {
             output = output.concat(customer.toString() + "\n");
         }
         return output;
     }
+
+    public String showProducts() {
+        String output = "PRODUCTS:\n";
+        EntityTransaction etx = this.em.getTransaction();
+        etx.begin();
+        List<Product> q1 = em.createQuery("from Product", Product.class).getResultList();
+        etx.commit();
+        for (Product product : q1) {
+            output = output.concat(product.toString() + "\n");
+        }
+        return output;
+    }
+
+    public String showSuppliers() {
+        String output = "SUPPLIERS:\n";
+        EntityTransaction etx = this.em.getTransaction();
+        etx.begin();
+        List<Supplier> q1 = em.createQuery("from Supplier", Supplier.class).getResultList();
+        etx.commit();
+        for (Supplier supplier : q1) {
+            output = output.concat(supplier.toString() + "\n");
+        }
+        return output;
+    }
+
+    public String showCategories() {
+        String output = "CATEGORIES:\n";
+        EntityTransaction etx = this.em.getTransaction();
+        etx.begin();
+        List<Category> q1 = em.createQuery("from Category", Category.class).getResultList();
+        etx.commit();
+        for (Category category : q1) {
+            output = output.concat(category.toString() + "\n");
+        }
+        return output;
+    }
+
+    public String showInvoices() {
+        String output = "INVOICES:\n";
+        EntityTransaction etx = this.em.getTransaction();
+        etx.begin();
+        List<Invoice> q1 = em.createQuery("from Invoice", Invoice.class).getResultList();
+        etx.commit();
+        for (Invoice invoice : q1) {
+            output = output.concat(invoice.toString() + "\n");
+        }
+        return output;
+    }
+
+    public void deleteCustomer() {
+
+    }
+
+    public void deleteProduct() {
+
+    }
+
+    public void deleteInvoice() {
+
+    }
+
+    public void deleteSupplier() {
+
+    }
+
+    public void deleteCategory() {
+
+    }
+
 
 }

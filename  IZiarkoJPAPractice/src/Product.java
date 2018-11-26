@@ -44,4 +44,9 @@ public class Product {
         this.productName = productName;
         this.unitsOnStock = unitsOnStock;
     }
+
+    @Override
+    public String toString() {
+        return "product id: " + id + " | product name: " + productName + " | units on stock: " + unitsOnStock + " | category_fk: " + category.categoryID + " | supplier_fk: " + supplier.getId();
+    }
 }
