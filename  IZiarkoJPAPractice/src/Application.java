@@ -28,18 +28,19 @@ public class Application {
         else if (words.get(0).trim().matches("-ain")) {
             dataBaseOperations.addNewInvoice(Integer.valueOf(words.get(1)));
         } //add product to invoice
-        else if (words.get(0).trim().matches("-apti")) {
-
+        else if (words.get(0).trim().matches("-aprtin")) {
+            dataBaseOperations.addProductToInvoice(Integer.valueOf(words.get(1)), Integer.valueOf(words.get(2)));
         } //add product to category
-        else if (words.get(0).trim().matches("-aptc")) {
-
+        else if (words.get(0).trim().matches("-aprtca")) {
+            dataBaseOperations.addProductToCategory(Integer.valueOf(words.get(1)), Integer.valueOf(words.get(2)));
+        } //add product to supplier
+        else if (words.get(0).trim().matches("-aprtsu")) {
+            dataBaseOperations.addProductToSupplier(Integer.valueOf(words.get(1)), Integer.valueOf(words.get(2)));
         } //start database
         else if (words.get(0).trim().matches("-start")) {
-            System.out.println("STARTING DATABASE\n");
             dataBaseOperations.startDatabase();
         } // end of session
         else if (words.get(0).trim().matches("-end")) {
-            System.out.println("END OF SESSION");
             dataBaseOperations.endOfSession();
         } // print customers
         else if (words.get(0).trim().matches("-pcu")) {
@@ -56,12 +57,26 @@ public class Application {
         } // print products
         else if (words.get(0).trim().matches("-ppr")) {
             System.out.println(dataBaseOperations.showProducts());
+        } // delete customer
+        else if (words.get(0).trim().matches("-dcu")) {
+            dataBaseOperations.deleteCustomer(Integer.valueOf(words.get(1).trim()));
+        } // delete invoice
+        else if (words.get(0).trim().matches("-din")) {
+            dataBaseOperations.deleteInvoice(Integer.valueOf(words.get(1).trim()));
+        } // delete product
+        else if (words.get(0).trim().matches("-dpr")) {
+            dataBaseOperations.deleteProduct(Integer.valueOf(words.get(1).trim()));
+        } // delete category
+        else if (words.get(0).trim().matches("-dca")) {
+            dataBaseOperations.deleteCategory(Integer.valueOf(words.get(1).trim()));
+        } // delete supplier
+        else if (words.get(0).trim().matches("-dsu")) {
+            dataBaseOperations.deleteSupplier(Integer.valueOf(words.get(1).trim()));
         } // wrong input
-        else if (words.get(0).trim().matches("-kill")){
+        else if (words.get(0).trim().matches("-kill")) {
             System.out.println("SEE U NEXT TIME");
             return false;
-        }
-        else {
+        } else {
             System.out.println("wrong input");
         }
         return true;

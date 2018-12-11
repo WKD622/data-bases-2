@@ -21,22 +21,22 @@ public class Product {
     @JoinColumn(name = "Category_fk")
     private Category category;
 
-    @ManyToMany(cascade =  CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private Set<Invoice> invoices = new HashSet<>();
 
     public Product() {
 
     }
 
-    public void addInvoice(Invoice invoice){
+    public void addInvoice(Invoice invoice) {
         this.invoices.add(invoice);
     }
 
-    public void setSupplier(Supplier supplier){
+    public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
     }
 
-    public void setCategory(Category category){
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -47,6 +47,14 @@ public class Product {
 
     @Override
     public String toString() {
-        return "product id: " + id + " | product name: " + productName + " | units on stock: " + unitsOnStock + " | category_fk: " + category.categoryID + " | supplier_fk: " + supplier.getId();
+        if (category != null && supplier != null) {
+            return "product id: " + id + " | product name: " + productName + " | units on stock: " + unitsOnStock + " | category_fk: " + category.categoryID + " | supplier_fk: " + supplier.getId();
+        } else if (category != null && supplier == null) {
+            return "product id: " + id + " | product name: " + productName + " | units on stock: " + unitsOnStock + " | category_fk: " + category.categoryID;
+        } else if (supplier != null && category == null) {
+            return "product id: " + id + " | product name: " + productName + " | units on stock: " + unitsOnStock + " | supplier_fk: " + supplier.getId();
+        } else {
+            return "product id: " + id + " | product name: " + productName + " | units on stock: " + unitsOnStock;
+        }
     }
 }
